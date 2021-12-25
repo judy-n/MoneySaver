@@ -1,5 +1,20 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faCoffee, faLock, faStar, faUserGraduate, faUserTie } from '@fortawesome/free-solid-svg-icons'
+import { borderBottomColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes'
+import { library } from '@fortawesome/fontawesome-svg-core'
+
+library.add(faCoffee, faLock, faStar, faUserGraduate, faUserTie)
+
+// do something with completed value
+const achievements = [
+    {icon: "coffee", text: "Save before 8 a.m.", completed: false},
+    {icon: "coffee", text: "Save before 8 a.m.", completed: true},
+    {icon: "star", text: "Save $500", completed: false},
+    {icon: "user-graduate", text: "Save $5000", completed: true},
+    {icon: "user-tie", text: "Save $50000", completed: true},
+]
 
 export default function Achievements({ navigation }) {
 
@@ -9,18 +24,24 @@ export default function Achievements({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <Pressable style={({ pressed }) => [
-                styles.button,
-                {
-                    backgroundColor: pressed ? 'ivory' : 'darkslategray',
-                    color: !pressed ? 'ivory' : 'darkslategray'
-                },
-            ]} onPress={goHome}>
-                <Text style={styles.text}>Back to Total</Text>
-            </Pressable>
             <Text style={styles.title}>My Achievements</Text>
             <View style={styles.achievements}>
-
+                {
+                    achievements.map((ach, index) => {
+                        return (
+                            <View style={styles.achievement} key={index}>
+                                <FontAwesomeIcon 
+                                    style={ach.completed ? styles.complete : styles.incomplete}
+                                    icon={ach.completed ? ach.icon : "lock"}
+                                    size={ 64 } 
+                                />
+                                <Text style={ach.completed ? [styles.achievementText] : [styles.achievementText, styles.incomplete]}>
+                                    {ach.text}
+                                </Text>
+                            </View>
+                        )
+                    })
+                }
             </View>
         </View>
     )
@@ -67,4 +88,25 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 20,
     },
+    achievement: {
+        width: '100%',
+        padding: '1.5%',
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottomColor: 'gray',
+        borderBottomWidth: 1,
+    },
+    achievementText: {
+        fontSize: 16,
+        fontWeight: '700'
+    },
+    incomplete: {
+        color: 'gray'
+    },
+    complete: {
+        color: 'black'
+    }
 });
