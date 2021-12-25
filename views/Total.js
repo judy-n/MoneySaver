@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard } from 'react-native';
 import { useState } from 'react'
 
 export default function App() {
@@ -13,9 +13,12 @@ export default function App() {
   }
 
   const addAmount = () => {
-    setTotal(prevTotal => prevTotal + parseInt(amount))
+    if (parseInt(amount)) {
+      setTotal(prevTotal => prevTotal + parseInt(amount))
+    }
     setAmount("")
     setDescription("")
+    Keyboard.dismiss()
   }
 
   return (
@@ -31,11 +34,20 @@ export default function App() {
           styles.button,
           {
             backgroundColor: pressed ? 'ivory' : 'darkslategray',
-            color: pressed ? 'ivory' : 'darkslategray'
           },
-        ]} onPress={addAmount}>
-          <Text style={styles.text}>+</Text>
-        </Pressable>
+        ]} onPress={addAmount}
+                   children={({ pressed }) => (
+                       <Text style={
+                       { color: pressed ? 'darkslategray' : 'ivory',
+                         fontFamily: "Helvetica",
+                         fontWeight: "normal",
+                         fontSize: 20
+                       }}>
+                         +
+                       </Text>)}/>
+      </View>
+      <View style={styles.nav}
+            >
       </View>
     </View>
   );
@@ -46,7 +58,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     width: '100%',
   },
   text: {
@@ -61,7 +73,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     display: "flex",
     flexDirection: "column",
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    marginTop: 60
   },
   label: {
     fontSize: 20,
