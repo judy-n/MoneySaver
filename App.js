@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Pressable } from 'react-native';
 import { useState } from 'react'
 
 export default function App() {
@@ -22,12 +22,14 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.totalContainer}>
         <Text style={styles.label}>Total Saved:</Text>
-        <Text style={styles.total}>{total}</Text>
+        <Text style={styles.total}>${total}</Text>
       </View>
       <View style={styles.form}>
-        <TextInput placeholder="amount" value={amount} onChangeText={changeAmount} keyboardType="numeric" />
-        <TextInput placeholder="description" value={description} onChangeText={setDescription} />
-        <Button title="+" onPress={addAmount} />
+        <TextInput style={styles.input} placeholder="amount" value={amount} onChangeText={changeAmount} keyboardType="numeric" />
+        <TextInput style={styles.input} placeholder="description" value={description} onChangeText={setDescription} />
+        <Pressable style={styles.button} onPress={addAmount}>
+          <Text style={styles.text}>+</Text>
+        </Pressable>
       </View>
       <StatusBar style="auto" />
     </View>
@@ -42,23 +44,69 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
   },
+  text: {
+    color: "ivory",
+    fontFamily: "Helvetica",
+    fontWeight: "bold",
+    fontSize: 20
+  },
   totalContainer: {
-    width: '100%',
+    width: '50%',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: '#fff'
   },
   label: {
     fontSize: 20,
-    textAlign: 'left',
-    width: '100%',
+    textAlign: 'center',
     fontWeight: '500',
     padding: 8,
     color: 'ivory',
     backgroundColor: 'gray',
+    marginBottom: 10,
+    borderWidth: 5,
+    borderColor: "gray",
+    borderRadius: 15,
+    overflow: "hidden"
   },
   total: {
     color: 'ivory',
-    fontFamily: 'monospace',
+    fontFamily: 'Helvetica',
     backgroundColor: 'darkslategray',
     fontSize: 32,
-    padding: 8,
+    padding: 20,
+    textAlign: "center",
+    fontWeight: '500',
+    marginBottom: 10,
+    borderWidth: 5,
+    borderColor: "darkslategray",
+    borderRadius: 15,
+    overflow: "hidden"
   },
+  form: {
+    display: "flex",
+    flexDirection: "row",
+    margin: 10
+  },
+  input: {
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: "lightgrey",
+    padding: 8,
+    borderRadius: 5,
+    fontFamily: "Helvetica"
+  },
+  button: {
+    borderWidth: 3,
+    borderColor: "darkslategray",
+    borderRadius: 5,
+    backgroundColor: "darkslategray",
+    width: '10%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+
+  }
 });
