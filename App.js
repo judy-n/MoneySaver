@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Total from './views/Total'
+import Achievements from './views/Achievements';
 
 const Stack = createNativeStackNavigator()
 
@@ -10,6 +11,10 @@ export default function App() {
   return (
     <NavigationContainer style={styles.container}>
       <Stack.Navigator>
+        <Stack.Screen 
+          name="Achievements"
+          component={Achievements}
+        />
         <Stack.Screen 
           name="Total"
           component={Total}
