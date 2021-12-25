@@ -27,7 +27,13 @@ export default function App() {
       <View style={styles.form}>
         <TextInput style={styles.input} placeholder="amount" value={amount} onChangeText={changeAmount} keyboardType="numeric" />
         <TextInput style={styles.input} placeholder="description" value={description} onChangeText={setDescription} />
-        <Pressable style={styles.button} onPress={addAmount}>
+        <Pressable style={({ pressed }) => [
+          styles.button,
+          {
+            backgroundColor: pressed ? 'ivory' : 'darkslategray',
+            color: pressed ? 'ivory' : 'darkslategray'
+          },
+        ]} onPress={addAmount}>
           <Text style={styles.text}>+</Text>
         </Pressable>
       </View>
@@ -102,11 +108,9 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "darkslategray",
     borderRadius: 5,
-    backgroundColor: "darkslategray",
     width: '10%',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
-
+    justifyContent: 'center',
   }
 });
