@@ -24,12 +24,12 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.totalContainer}>
-        <Text style={styles.label}>Total Saved:</Text>
+        <Text style={styles.label}>Total Saved</Text>
         <Text style={styles.total}>${total}</Text>
       </View>
       <View style={styles.form}>
-        <TextInput style={styles.input} placeholder="amount" value={amount} onChangeText={changeAmount} keyboardType="numeric" />
-        <TextInput style={styles.input} placeholder="description" value={description} onChangeText={setDescription} />
+        <TextInput style={styles.input} placeholder="Amount" value={amount} onChangeText={changeAmount} keyboardType="numeric" />
+        <TextInput style={styles.input} placeholder="Description" value={description} onChangeText={setDescription} />
         <Pressable style={({ pressed }) => [
           styles.button,
           {
@@ -46,9 +46,16 @@ export default function App() {
                          +
                        </Text>)}/>
       </View>
-      <View style={styles.nav}
-            >
-      </View>
+      <Pressable style={styles.reset} onPress={() => setTotal(0)}
+                 children={({ pressed }) => (
+                     <Text style={
+                       { color: pressed ? 'lightgray' : 'darkslategray',
+                         fontFamily: "Helvetica",
+                         fontWeight: "400",
+                         fontSize: 15
+                       }}>
+                       Reset
+                     </Text>)}/>
     </View>
   );
 }
@@ -62,10 +69,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   text: {
-    color: "ivory",
+    color: "darkslategray",
     fontFamily: "Helvetica",
-    fontWeight: "bold",
-    fontSize: 20
+    fontWeight: "400",
+    fontSize: 15,
   },
   totalContainer: {
     width: '50%',
@@ -124,5 +131,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  reset:{
+    marginTop: "45%"
   }
 });
