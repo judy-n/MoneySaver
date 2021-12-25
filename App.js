@@ -30,13 +30,13 @@ export default function App() {
   return (
     <NavigationContainer style={styles.container}>
       <Tab.Navigator>
+          <Tab.Screen
+              name="Total"
+              component={Total}
+          />
         <Tab.Screen
           name="Achievements"
           component={Achievements}
-        />
-        <Tab.Screen
-          name="Total"
-          component={Total}
         />
       </Tab.Navigator>
     </NavigationContainer>
