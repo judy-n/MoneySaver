@@ -22,6 +22,7 @@ export default function NavMenu({ setTheme, themes }) {
         >
             <Menu visible={themeVisible} onDismiss={closeThemeMenu} anchor={<Pressable style={styles.button} onPress={openThemeMenu}><Text>Theme</Text></Pressable>}>
                 <Menu.Item onPress={() => setTheme("default")}  title="Default" />
+                <Menu.Item onPress={() => setTheme("christmas")}  title="Christmas" />
                 <Menu.Item disabled={!themes.includes("pixel")} onPress={() => setTheme("pixel")} title="Pixel" />
                 <Menu.Item disabled={!themes.includes("bitcoin")} onPress={() => setTheme("bitcoin")} title="Bitcoin" />
                 <Menu.Item disabled={!themes.includes("rich")} onPress={() => setTheme("rich")} title="Rich" />

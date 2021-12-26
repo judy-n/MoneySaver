@@ -150,7 +150,7 @@ export default function App() {
               >
                 {props => <Total {...props} checkAchievements={checkAchievements} theme={theme} resetAchievements={resetAchievements} />}
               </Tab.Screen>
-              <Tab.Screen name="Achievements">
+              <Tab.Screen name="Achievements" options={{headerTitle: props => <Text></Text>}}>
                 {props => <Achievements {...props} achievements={achievements} />}
               </Tab.Screen>
           </Tab.Navigator>

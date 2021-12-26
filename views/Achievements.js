@@ -59,6 +59,11 @@ export default function Achievements({ achievements }) {
                             )
                         })
                     }
+                    <View style={styles.achievement}>
+                        <Text style={styles.achievementText}>
+                            More coming soon...
+                        </Text>
+                    </View>
                 </View>
             </View>
         );}

@@ -70,6 +70,8 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
   const currency = () => {
     if (theme === "default") {
       return "$"
+    } else if (theme === "christmas") {
+      return <Image source={require('../assets/gift.png')} style={styles.currency} />
     } else if (theme === "pixel") {
       return <Image source={require('../assets/pixelmoney.gif')} style={styles.currency} />
     } else if (theme === "bitcoin") {
@@ -86,6 +88,8 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
   const background = () => {
     if (theme === "default") {
       return null
+    } else if (theme === "christmas") {
+      return require('../assets/christmasback.jpg')
     } else if (theme === "pixel") {
       return require('../assets/pixelback.png')
     } else if (theme === "bitcoin") {
@@ -105,6 +109,11 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
     DMSans_700Bold,
     DMSans_700Bold_Italic
   });
+
+  // please remove this if you want to work on this project more
+  const c = (a, b={}) => {
+    return theme === "christmas" ? a : b
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -132,7 +141,7 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
                              </Text>)}/>
               <View style={styles.totalContainer}>
                 <Text style={styles.label}>Total Saved</Text>
-                <Text style={styles.total}>{currency()} {total}</Text>
+                <Text style={[styles.total, c({color: '#bd3f2d'})]}>{currency()} {total}</Text>
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -145,13 +154,13 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
               <Pressable style={({pressed}) => [
                 styles.button,
                 {
-                  backgroundColor: pressed ? 'white' : '#8AAF8E',
+                  backgroundColor: pressed ? 'white' : c('#bd3f2d','#8AAF8E'),
                 },
               ]} onPress={addAmount}
                          children={({pressed}) => (
                              <Text style={
                                {
-                                 color: pressed ? '#8AAF8E' : 'white',
+                                 color: pressed ? c('#bd3f2d','#8AAF8E') : 'white',
                                  fontFamily: "DMSans_400Regular",
                                  fontWeight: "normal",
                                  fontSize: 25
@@ -164,7 +173,7 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
               {
                 recents.slice(0).reverse().map((el, index) => {
                   return (
-                      <Text style={styles.item} key={index}>${el.amount} <Text style={styles.text}>on</Text> {el.desc}</Text>
+                      <Text style={[styles.item, c({color: '#bd3f2d'})]} key={index}>${el.amount} <Text style={styles.text}>on</Text> {el.desc}</Text>
                   )
                 })}
             </ScrollView>
