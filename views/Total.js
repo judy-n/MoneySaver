@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { useState } from 'react'
 
 export default function App() {
@@ -22,7 +22,19 @@ export default function App() {
   }
 
   return (
+      <View style={styles.container}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <View style={styles.container}>
+      <Pressable style={styles.reset} onPress={() => setTotal(0)}
+                 children={({ pressed }) => (
+                     <Text style={
+                       { color: pressed ? 'lightgray' : 'darkslategray',
+                         fontFamily: "Helvetica",
+                         fontWeight: "400",
+                         fontSize: 15
+                       }}>
+                       Reset
+                     </Text>)}/>
       <View style={styles.totalContainer}>
         <Text style={styles.label}>Total Saved</Text>
         <Text style={styles.total}>${total}</Text>
@@ -41,22 +53,31 @@ export default function App() {
                        { color: pressed ? 'darkslategray' : 'ivory',
                          fontFamily: "Helvetica",
                          fontWeight: "normal",
-                         fontSize: 20
+                         fontSize: 25
                        }}>
                          +
                        </Text>)}/>
       </View>
-      <Pressable style={styles.reset} onPress={() => setTotal(0)}
-                 children={({ pressed }) => (
-                     <Text style={
-                       { color: pressed ? 'lightgray' : 'darkslategray',
-                         fontFamily: "Helvetica",
-                         fontWeight: "400",
-                         fontSize: 15
-                       }}>
-                       Reset
-                     </Text>)}/>
     </View>
+    </TouchableWithoutFeedback>
+        <View style={{flex:1, padding: 5, marginBottom:-100, width: '100%', alignItems: 'center'}}>
+        <Text style={styles.title}>Recent Savings</Text>
+        <ScrollView style={{ width: '100%'}} contentContainerStyle={{paddingBottom: 100}}>
+          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
+          <Text style={styles.item}>HIII</Text>
+          <Text style={styles.item}>HIII</Text>
+          <Text style={styles.item}>HIII</Text>
+          <Text style={styles.item}>HIII</Text>
+          <Text style={styles.item}>HIII</Text>
+          <Text style={styles.item}>HIII</Text>
+          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
+          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
+          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
+          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
+          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
+        </ScrollView>
+        </View>
+      </View>
   );
 }
 
@@ -67,6 +88,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: '100%',
+    overflow: "scroll",
   },
   text: {
     color: "darkslategray",
@@ -113,7 +135,8 @@ const styles = StyleSheet.create({
   form: {
     display: "flex",
     flexDirection: "row",
-    margin: 10
+    margin: 10,
+    marginBottom: 0
   },
   input: {
     marginRight: 10,
@@ -121,7 +144,9 @@ const styles = StyleSheet.create({
     borderColor: "lightgrey",
     padding: 8,
     borderRadius: 5,
-    fontFamily: "Helvetica"
+    fontFamily: "Helvetica",
+    fontSize: 18,
+    width: '40%'
   },
   button: {
     borderWidth: 3,
@@ -133,6 +158,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   reset:{
-    marginTop: "45%"
-  }
+    marginTop: 20,
+  },
+  title: {
+    color: "darkslategray",
+    fontFamily: "Helvetica",
+    fontWeight: "bold",
+    fontSize: 20,
+    marginTop: 40,
+    marginBottom: 10
+  },
+  item: {
+    color: "darkslategray",
+    fontFamily: "Helvetica",
+    fontWeight: "400",
+    padding: 10,
+    borderWidth:1,
+    borderColor: "lightgray",
+    textAlign: "center"
+  },
 });
