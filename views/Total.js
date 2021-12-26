@@ -1,11 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-export default function App() {
+export default function Total({ checkAchievements }) {
   const [total, setTotal] = useState(5)
   const [amount, setAmount] = useState("")
   const [description, setDescription] = useState("")
+
+  useEffect(() => {
+    checkAchievements(total)
+  }, [total]) // runs whenever total is changes
 
   const changeAmount = (amount) => {
     amount = amount.replace(/[^0-9]/g, '')

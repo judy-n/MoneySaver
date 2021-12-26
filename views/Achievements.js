@@ -1,27 +1,14 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faCoffee, faLock, faStar, faUserGraduate, faUserTie } from '@fortawesome/free-solid-svg-icons'
+import { faCoffee, faLock, faStar, faUserGraduate, faUserTie, faDiceOne } from '@fortawesome/free-solid-svg-icons'
 import { borderBottomColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes'
 import { library } from '@fortawesome/fontawesome-svg-core'
 
-library.add(faCoffee, faLock, faStar, faUserGraduate, faUserTie)
+library.add(faCoffee, faLock, faStar, faUserGraduate, faUserTie, faDiceOne)
 
-// do something with completed value
-const achievements = [
-    {icon: "coffee", text: "Save before 8 a.m.", completed: false},
-    {icon: "coffee", text: "Save before 8 a.m.", completed: true},
-    {icon: "star", text: "Save $500", completed: false},
-    {icon: "user-graduate", text: "Save $5000", completed: true},
-    {icon: "user-tie", text: "Save $50000", completed: true},
-]
 
-export default function Achievements({ navigation }) {
-
-    const goHome = () => {
-        navigation.navigate('Total')
-    }
-
+export default function Achievements({ achievements }) {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>My Achievements</Text>
@@ -35,7 +22,7 @@ export default function Achievements({ navigation }) {
                                     icon={ach.completed ? ach.icon : "lock"}
                                     size={ 64 } 
                                 />
-                                <Text style={ach.completed ? [styles.achievementText] : [styles.achievementText, styles.incomplete]}>
+                                <Text style={ach.completed ? styles.achievementText : [styles.achievementText, styles.incomplete]}>
                                     {ach.text}
                                 </Text>
                             </View>
@@ -101,7 +88,8 @@ const styles = StyleSheet.create({
     },
     achievementText: {
         fontSize: 16,
-        fontWeight: '700'
+        fontWeight: '700',
+        color: 'black',
     },
     incomplete: {
         color: 'gray'

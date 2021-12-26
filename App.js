@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -28,6 +29,35 @@ function AchievementsScreen() {
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const [achievements, setAchievements] = useState([
+    {icon: "coffee", text: "Save before 8 a.m.", completed: false},
+    {icon: "coffee", text: "Save before 8 a.m.", completed: true},
+    {icon: "star", text: "Save $500", completed: false},
+    {icon: "user-graduate", text: "Save $5000", completed: false},
+    {icon: "user-tie", text: "Save $50000", completed: false},
+  ])
+  
+  const checkAchievements = (total) => {
+    if (total >= 500 && !isCompleted("star")) {
+      updateAchievement("star")
+    } else if (total < 500 && isCompleted("star")) {
+      updateAchievement("star", false)
+    }
+  }
+
+  const isCompleted = (iconName) => { // will return false if item not found also
+    return !!achievements[achievements.findIndex(ach => ach.icon === iconName)].completed
+  }
+
+  const updateAchievement = (iconName, value=true) => {
+    setAchievements(prevAchievements => {
+      const index = prevAchievements.findIndex(ach => ach.icon === iconName)
+      const newAchievements = [...prevAchievements]
+      newAchievements[index] = {...newAchievements[index], completed: value}
+      return newAchievements
+    })
+  }
+
   return (
       <NavigationContainer>
           <Tab.Navigator
@@ -49,8 +79,12 @@ export default function App() {
                   tabBarInactiveTintColor: 'lightgray',
               })}
           >
-              <Tab.Screen name="Home" component={Total} />
-              <Tab.Screen name="Achievements" component={Achievements} />
+              <Tab.Screen name="Home" >
+                {props => <Total {...props} checkAchievements={checkAchievements} />}
+              </Tab.Screen>
+              <Tab.Screen name="Achievements">
+                {props => <Achievements {...props} achievements={achievements} />}
+              </Tab.Screen>
           </Tab.Navigator>
       </NavigationContainer>
   );
