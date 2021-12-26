@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import Total from './views/Total'
 import Achievements from './views/Achievements';
 
@@ -31,12 +32,6 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   const [achievements, setAchievements] = useState([
     {
-      icon: "coffee",
-      text: "Save before 8 a.m.",
-      completed: false,
-      condition: (value) => (new Date()).getHours < 8 && (new Date()).getHours() >= 0
-    },
-    {
       icon: "star",
       text: "Save $500",
       completed: false,
@@ -54,16 +49,52 @@ export default function App() {
       completed: false,
       condition: (value) => value >= 50000
     },
+    {
+      icon: "coffee",
+      text: "Save before 8 a.m.",
+      completed: false,
+      condition: (value) => (new Date()).getHours < 8 && (new Date()).getHours() >= 0
+    },
   ])
+
+  useEffect(() => {
+    AsyncStorage.getItem('msave_Completed')
+      .then(result => {
+        const completed = JSON.parse(result)
+        console.log('we just read', completed)
+        const newAchievements = []
+        for (let ach of achievements) {
+          if (!!completed[ach.icon]) {
+            console.log("LOOK AT ME PLEASE", ach.icon)
+          } else {
+            console.log("WHY", ach.icon, completed[ach.icon])
+          }
+          newAchievements.push({
+            ...ach,
+            completed: !!completed[ach.icon]
+          })
+        }
+        setAchievements(newAchievements)
+      })
+      .catch(e => console.error('error', e))
+  }, [])
   
   const checkAchievements = (total) => {
+    AsyncStorage.setItem('msave_Total', `${total}`)
+    let updated = []
     achievements.forEach(ach => {
       const {icon, condition} = ach
 
       if (condition(total) && !isCompleted(icon)) {
         updateAchievement(icon)
+        updated.push(icon)
       }
     })
+    if (updated.length > 0) {
+      // maps icon to completed status
+      const completed = achievements.reduce((acc, curr) => ({...acc, [curr.icon]: curr.completed || updated.includes(curr.icon)}), {})
+      AsyncStorage.setItem('msave_Completed', JSON.stringify(completed))
+    }
   }
 
   const isCompleted = (iconName) => { // will return false if item not found also

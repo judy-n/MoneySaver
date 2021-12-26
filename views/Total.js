@@ -1,11 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { useState, useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Total({ checkAchievements }) {
   const [total, setTotal] = useState(5)
   const [amount, setAmount] = useState("")
   const [description, setDescription] = useState("")
+
+  useEffect(() => {
+    AsyncStorage.getItem('msave_Total')
+      .then(result => {
+        if (result && parseInt(result)) {
+          setTotal(parseInt(result))
+        }
+      })
+      .catch(e => console.error('error', e))
+  }, [])
 
   useEffect(() => {
     checkAchievements(total)
