@@ -17,11 +17,23 @@ export default function Total({ checkAchievements }) {
         }
       })
       .catch(e => console.error('error', e))
+    AsyncStorage.getItem('msave_Recents')
+      .then(result => {
+        if (result) {
+          const { recents } = JSON.parse(result)
+          setRecents(recents)
+        }
+      })
+      .catch(e => console.error('error', e))
   }, [])
 
   useEffect(() => {
     checkAchievements(total)
   }, [total]) // runs whenever total is changes
+
+  useEffect(() => {
+    AsyncStorage.setItem('msave_Recents', JSON.stringify({recents}))
+  }, [recents])
 
   const changeAmount = (amount) => {
     amount = amount.replace(/[^0-9]/g, '')

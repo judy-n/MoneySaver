@@ -35,24 +35,28 @@ export default function App() {
       icon: "star",
       text: "Save $500",
       completed: false,
+      color: "yellow",
       condition: (value) => value >= 500
     },
     {
       icon: "user-graduate",
       text: "Save $5000",
       completed: false,
+      color: "blue",
       condition: (value) => value >= 5000
     },
     {
       icon: "user-tie",
       text: "Save $50000",
       completed: false,
+      color: "blue",
       condition: (value) => value >= 50000
     },
     {
       icon: "coffee",
       text: "Save before 8 a.m.",
       completed: false,
+      color: "brown",
       condition: (value) => (new Date()).getHours < 8 && (new Date()).getHours() >= 0
     },
   ])

@@ -18,7 +18,7 @@ export default function Achievements({ achievements }) {
                         return (
                             <View style={styles.achievement} key={index}>
                                 <FontAwesomeIcon 
-                                    style={ach.completed ? styles.complete : styles.incomplete}
+                                    style={ach.completed ? [styles.complete, {color: ach.color}] : [styles.incomplete]}
                                     icon={ach.completed ? ach.icon : "lock"}
                                     size={ 64 } 
                                 />
