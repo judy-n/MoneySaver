@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView, Image, ImageBackground } from 'react-native';
 import { useState, useEffect } from 'react'
 import AppLoading from 'expo-app-loading'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -65,13 +65,33 @@ export default function Total({ checkAchievements, theme }) {
     Keyboard.dismiss()
   }
 
-  const currency = (theme) => {
+  const currency = () => {
     if (theme === "default") {
       return "$"
     } else if (theme === "pixel") {
-      return <Image source={require('../assets/pixelmoney2.gif')} />
+      return <Image source={require('../assets/pixelmoney.gif')} style={styles.currency} />
+    } else if (theme === "bitcoin") {
+      return <Image source={require('../assets/bitcoin.png')} style={styles.currency} />
+    } else if (theme === "rich") {
+      return <Image source={require('../assets/gold.png')} style={styles.currency} />
+    } else if (theme === "animalCrossing") {
+      return <Image source={require('../assets/animalcrossing.jpg')} style={styles.currency} />
     } else {
       console.log('t', theme)
+    }
+  }
+
+  const background = () => {
+    if (theme === "default") {
+      return null
+    } else if (theme === "pixel") {
+      return require('../assets/pixelback.png')
+    } else if (theme === "bitcoin") {
+      return require('../assets/bitcoinback.jpg')
+    } else if (theme === "rich") {
+      return require('../assets/richback.jpg')
+    } else if (theme === "animalCrossing") {
+      return require('../assets/animalcrossingback.jpg')
     }
   }
 
@@ -88,6 +108,7 @@ export default function Total({ checkAchievements, theme }) {
     return <AppLoading />;
   } else {
     return (
+        <ImageBackground source={background()} resizeMode='cover' style={{width: '100%', height: '100%', backgroundColor: '#8AAF8E'}}>
         <View style={styles.container}>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.container}>
@@ -106,7 +127,7 @@ export default function Total({ checkAchievements, theme }) {
                              </Text>)}/>
               <View style={styles.totalContainer}>
                 <Text style={styles.label}>Total Saved</Text>
-                <Text style={styles.total}>{currency(theme || "default")} {total}</Text>
+                <Text style={styles.total}>{currency()} {total}</Text>
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -144,6 +165,7 @@ export default function Total({ checkAchievements, theme }) {
             </ScrollView>
           </View>
         </View>
+        </ImageBackground>
     );
   }
 }
@@ -151,7 +173,7 @@ export default function Total({ checkAchievements, theme }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#8AAF8E',
+    backgroundColor: 'rgba(0,0,0,0)', // was #8AAF8E
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: '100%',
@@ -169,7 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     display: "flex",
     flexDirection: "column",
-    backgroundColor: '#8AAF8E',
+    backgroundColor: 'rgba(0,0,0,0)',// was '#8AAF8E',
     marginTop: 20,
   },
   label: {
@@ -250,5 +272,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
     paddingTop: 20
+  },
+  currecy: {
+    display: 'flex',
+    height: null,
+    width: null,
+    resizeMode: 'contain',
   }
 });

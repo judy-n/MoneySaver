@@ -19,28 +19,32 @@ const defaultAchievements = [
     text: "Save $500",
     completed: false,
     color: "#8AAF8E",
-    condition: (value) => value >= 500
+    condition: (value) => value >= 500,
+    theme: "pixel"
   },
   {
     icon: "user-graduate",
     text: "Save $5000",
     completed: false,
     color: "#8AAF8E",
-    condition: (value) => value >= 5000
+    condition: (value) => value >= 5000,
+    theme: "bitcoin"
   },
   {
     icon: "user-tie",
     text: "Save $50000",
     completed: false,
     color: "#8AAF8E",
-    condition: (value) => value >= 50000
+    condition: (value) => value >= 50000,
+    theme: "rich"
   },
   {
     icon: "coffee",
     text: "Save before 8 a.m.",
     completed: false,
     color: "brown",
-    condition: (value) => (new Date()).getHours < 8 && (new Date()).getHours() >= 0
+    condition: (value) => (new Date()).getHours < 8 && (new Date()).getHours() >= 0,
+    theme: "animalCrossing"
   },
 ]
 
@@ -65,6 +69,7 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   const [achievements, setAchievements] = useState(defaultAchievements)
   const [theme, setTheme] = useState("default")
+  const [themes, setThemes] = useState([])
 
   useEffect(() => {
     AsyncStorage.getItem('msave_Completed')
@@ -81,6 +86,10 @@ export default function App() {
       })
       .catch(e => console.error('error', e))
   }, [])
+
+  useEffect(() => {
+    setThemes(achievements.filter(ach => ach.completed).map(ach => ach.theme))
+  }, [achievements])
 
   const checkAchievements = (total) => {
     AsyncStorage.setItem('msave_Total', `${total}`)
@@ -142,7 +151,7 @@ export default function App() {
               <Tab.Screen
                 name="Home"
                 options={{
-                  headerRight: props => <NavMenu {...props} setTheme={setTheme} />,
+                  headerRight: props => <NavMenu {...props} setTheme={setTheme} themes={themes} />,
                   headerStyle: {shadowColor: 'black', shadowRadius: 20, shadowOffset: {width: 2, height: 2}, shadowOpacity: 0}
                 }}
               >
