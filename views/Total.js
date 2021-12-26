@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView, Image } from 'react-native';
 import { useState, useEffect } from 'react'
 import AppLoading from 'expo-app-loading'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -13,7 +13,7 @@ import {
   DMSans_700Bold_Italic
 } from '@expo-google-fonts/dm-sans'
 
-export default function Total({ checkAchievements }) {
+export default function Total({ checkAchievements, theme }) {
   const [total, setTotal] = useState(5)
   const [amount, setAmount] = useState("")
   const [description, setDescription] = useState("")
@@ -65,6 +65,16 @@ export default function Total({ checkAchievements }) {
     Keyboard.dismiss()
   }
 
+  const currency = (theme) => {
+    if (theme === "default") {
+      return "$"
+    } else if (theme === "pixel") {
+      return <Image source={require('../assets/pixelmoney2.gif')} />
+    } else {
+      console.log('t', theme)
+    }
+  }
+
   let [fontsLoaded] = useFonts({
     DMSans_400Regular,
     DMSans_400Regular_Italic,
@@ -96,7 +106,7 @@ export default function Total({ checkAchievements }) {
                              </Text>)}/>
               <View style={styles.totalContainer}>
                 <Text style={styles.label}>Total Saved</Text>
-                <Text style={styles.total}>$ {total}</Text>
+                <Text style={styles.total}>{currency(theme || "default")} {total}</Text>
               </View>
             </View>
           </TouchableWithoutFeedback>

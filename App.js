@@ -4,12 +4,45 @@ import { StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Provider } from 'react-native-paper'
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Total from './views/Total'
 import Achievements from './views/Achievements';
+import NavMenu from './components/NavMenu'
 
 const Stack = createNativeStackNavigator()
+
+const defaultAchievements = [
+  {
+    icon: "star",
+    text: "Save $500",
+    completed: false,
+    color: "yellow",
+    condition: (value) => value >= 500
+  },
+  {
+    icon: "user-graduate",
+    text: "Save $5000",
+    completed: false,
+    color: "blue",
+    condition: (value) => value >= 5000
+  },
+  {
+    icon: "user-tie",
+    text: "Save $50000",
+    completed: false,
+    color: "blue",
+    condition: (value) => value >= 50000
+  },
+  {
+    icon: "coffee",
+    text: "Save before 8 a.m.",
+    completed: false,
+    color: "brown",
+    condition: (value) => (new Date()).getHours < 8 && (new Date()).getHours() >= 0
+  },
+]
 
 function HomeScreen() {
   return (
@@ -30,49 +63,15 @@ function AchievementsScreen() {
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [achievements, setAchievements] = useState([
-    {
-      icon: "star",
-      text: "Save $500",
-      completed: false,
-      color: "yellow",
-      condition: (value) => value >= 500
-    },
-    {
-      icon: "user-graduate",
-      text: "Save $5000",
-      completed: false,
-      color: "blue",
-      condition: (value) => value >= 5000
-    },
-    {
-      icon: "user-tie",
-      text: "Save $50000",
-      completed: false,
-      color: "blue",
-      condition: (value) => value >= 50000
-    },
-    {
-      icon: "coffee",
-      text: "Save before 8 a.m.",
-      completed: false,
-      color: "brown",
-      condition: (value) => (new Date()).getHours < 8 && (new Date()).getHours() >= 0
-    },
-  ])
+  const [achievements, setAchievements] = useState(defaultAchievements)
+  const [theme, setTheme] = useState("default")
 
   useEffect(() => {
     AsyncStorage.getItem('msave_Completed')
       .then(result => {
         const completed = JSON.parse(result)
-        console.log('we just read', completed)
         const newAchievements = []
         for (let ach of achievements) {
-          if (!!completed[ach.icon]) {
-            console.log("LOOK AT ME PLEASE", ach.icon)
-          } else {
-            console.log("WHY", ach.icon, completed[ach.icon])
-          }
           newAchievements.push({
             ...ach,
             completed: !!completed[ach.icon]
@@ -114,7 +113,12 @@ export default function App() {
     })
   }
 
+  const resetAchievements = () => {
+    setAchievements(defaultAchievements)
+  }
+
   return (
+    <Provider>
       <NavigationContainer>
           <Tab.Navigator
               screenOptions={({ route }) => ({
@@ -135,14 +139,21 @@ export default function App() {
                   tabBarInactiveTintColor: 'lightgray',
               })}
           >
-              <Tab.Screen name="Home" >
-                {props => <Total {...props} checkAchievements={checkAchievements} />}
+              <Tab.Screen
+                name="Home"
+                options={{
+                  headerRight: props => <NavMenu {...props} setTheme={setTheme} />,
+                  headerStyle: {shadowColor: 'black', shadowRadius: 20, shadowOffset: {width: 2, height: 2}, shadowOpacity: 1}
+                }}
+              >
+                {props => <Total {...props} checkAchievements={checkAchievements} theme={theme} />}
               </Tab.Screen>
               <Tab.Screen name="Achievements">
                 {props => <Achievements {...props} achievements={achievements} />}
               </Tab.Screen>
           </Tab.Navigator>
       </NavigationContainer>
+    </Provider>
   );
 }
 
