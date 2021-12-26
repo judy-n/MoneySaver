@@ -18,21 +18,21 @@ const defaultAchievements = [
     icon: "star",
     text: "Save $500",
     completed: false,
-    color: "yellow",
+    color: "#8AAF8E",
     condition: (value) => value >= 500
   },
   {
     icon: "user-graduate",
     text: "Save $5000",
     completed: false,
-    color: "blue",
+    color: "#8AAF8E",
     condition: (value) => value >= 5000
   },
   {
     icon: "user-tie",
     text: "Save $50000",
     completed: false,
-    color: "blue",
+    color: "#8AAF8E",
     condition: (value) => value >= 50000
   },
   {

@@ -68,30 +68,22 @@ const styles = StyleSheet.create({
         padding: 32,
     },
     title: {
-        fontSize: 28,
-        fontFamily: "DMSans_700Bold",
+        fontSize: 25,
+        fontFamily: "DMSans_400Regular",
+        color: "#8AAF8E"
     },
     achievements: {
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        width: '80%',
-        backgroundColor: 'lightgray',
+        width: '90%',
+        backgroundColor: '#EFEFEF',
         flexGrow: 1,
         borderRadius: 5,
         shadowColor: 'black',
         shadowRadius: 1,
-        marginTop: 8,
+        marginTop: 20,
         padding: 8,
-    },
-    button: {
-        borderWidth: 3,
-        borderColor: "darkslategray",
-        borderRadius: 5,
-        width: 'auto',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     text: {
         color: "ivory",
@@ -100,25 +92,25 @@ const styles = StyleSheet.create({
     },
     achievement: {
         width: '100%',
-        padding: '1.5%',
+        padding: 15,
         textAlign: 'center',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderBottomColor: 'gray',
-        borderBottomWidth: 1,
+        borderBottomColor: 'lightgray',
+        borderBottomWidth: 2,
     },
     achievementText: {
         fontSize: 16,
         fontWeight: '700',
-        color: 'black',
+        color: '#8AAF8E',
         fontFamily: "DMSans_700Bold"
     },
     incomplete: {
         color: 'gray'
     },
     complete: {
-        color: 'black'
+        color: '#8AAF8E'
     }
 });
