@@ -17,6 +17,7 @@ const defaultAchievements = [
   {
     icon: "star",
     text: "Save $500",
+    subtitle: "Unlocks 'Pixel' theme",
     completed: false,
     color: "#8AAF8E",
     condition: (value) => value >= 500,
@@ -25,6 +26,7 @@ const defaultAchievements = [
   {
     icon: "user-graduate",
     text: "Save $5000",
+    subtitle: "Unlocks 'Bitcoin' theme",
     completed: false,
     color: "#8AAF8E",
     condition: (value) => value >= 5000,
@@ -33,6 +35,7 @@ const defaultAchievements = [
   {
     icon: "user-tie",
     text: "Save $50000",
+    subtitle: "Unlocks 'Rich' theme",
     completed: false,
     color: "#8AAF8E",
     condition: (value) => value >= 50000,
@@ -41,28 +44,13 @@ const defaultAchievements = [
   {
     icon: "coffee",
     text: "Save before 8 a.m.",
+    subtitle: "Unlocks 'Animal Crossing' theme",
     completed: false,
     color: "brown",
-    condition: (value) => (new Date()).getHours < 8 && (new Date()).getHours() >= 0,
+    condition: (value) => (new Date()).getHours() < 8 && (new Date()).getHours() >= 0,
     theme: "animalCrossing"
   },
 ]
-
-function HomeScreen() {
-  return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Home</Text>
-      </View>
-  );
-}
-
-function AchievementsScreen() {
-  return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Achievements</Text>
-      </View>
-  );
-}
 
 const Tab = createBottomTabNavigator();
 
@@ -92,6 +80,9 @@ export default function App() {
   }, [achievements])
 
   const checkAchievements = (total) => {
+    if (total <= 0) {
+      return
+    }
     AsyncStorage.setItem('msave_Total', `${total}`)
     let updated = []
     achievements.forEach(ach => {
@@ -124,6 +115,8 @@ export default function App() {
 
   const resetAchievements = () => {
     setAchievements(defaultAchievements)
+    const completed = defaultAchievements.reduce((acc, curr) => ({...acc, [curr.icon]: curr.completed}), {})
+    AsyncStorage.setItem('msave_Completed', JSON.stringify(completed))
   }
 
   return (
@@ -155,7 +148,7 @@ export default function App() {
                   headerStyle: {shadowColor: 'black', shadowRadius: 20, shadowOffset: {width: 2, height: 2}, shadowOpacity: 0}
                 }}
               >
-                {props => <Total {...props} checkAchievements={checkAchievements} theme={theme} />}
+                {props => <Total {...props} checkAchievements={checkAchievements} theme={theme} resetAchievements={resetAchievements} />}
               </Tab.Screen>
               <Tab.Screen name="Achievements">
                 {props => <Achievements {...props} achievements={achievements} />}

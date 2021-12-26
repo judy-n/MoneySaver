@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView, Image, ImageBackground } from 'react-native';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import AppLoading from 'expo-app-loading'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
@@ -13,8 +13,8 @@ import {
   DMSans_700Bold_Italic
 } from '@expo-google-fonts/dm-sans'
 
-export default function Total({ checkAchievements, theme }) {
-  const [total, setTotal] = useState(5)
+export default function Total({ checkAchievements, theme, resetAchievements }) {
+  const [total, setTotal] = useState(0)
   const [amount, setAmount] = useState("")
   const [description, setDescription] = useState("")
   const [recents, setRecents] = useState([])
@@ -38,7 +38,9 @@ export default function Total({ checkAchievements, theme }) {
   }, [])
 
   useEffect(() => {
-    checkAchievements(total)
+    if (total > 0) {
+      checkAchievements(total)
+    }
   }, [total]) // runs whenever total is changes
 
   useEffect(() => {
@@ -115,6 +117,9 @@ export default function Total({ checkAchievements, theme }) {
               <Pressable style={styles.reset} onPress={() => {
                 setTotal(0)
                 setRecents([])
+                resetAchievements()
+                AsyncStorage.setItem('msave_Recents', JSON.stringify({recents: []}))
+                AsyncStorage.setItem('msave_Total', `0`)
               } }
                          children={({pressed}) => (
                              <Text style={
@@ -157,9 +162,9 @@ export default function Total({ checkAchievements, theme }) {
             <Text style={styles.title}>Recent Savings</Text>
             <ScrollView style={{width: '100%'}} contentContainerStyle={{paddingBottom: 10}}>
               {
-                recents.slice(0).reverse().map((el) => {
+                recents.slice(0).reverse().map((el, index) => {
                   return (
-                      <Text style={styles.item}>${el.amount} <Text style={styles.text}>on</Text> {el.desc}</Text>
+                      <Text style={styles.item} key={index}>${el.amount} <Text style={styles.text}>on</Text> {el.desc}</Text>
                   )
                 })}
             </ScrollView>
@@ -216,7 +221,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: "hidden",
     minWidth: '60%',
-    maxWidth: '80%',
+    maxWidth: '100%',
   },
   form: {
     display: "flex",

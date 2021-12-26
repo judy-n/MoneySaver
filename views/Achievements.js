@@ -45,10 +45,16 @@ export default function Achievements({ achievements }) {
                                         icon={ach.completed ? ach.icon : "lock"}
                                         size={64}
                                     />
-                                    <Text
-                                        style={ach.completed ? styles.achievementText : [styles.achievementText, styles.incomplete]}>
-                                        {ach.text}
-                                    </Text>
+                                    <View>
+                                        <Text
+                                            style={ach.completed ? styles.achievementText : [styles.achievementText, styles.incomplete]}>
+                                            {ach.text}
+                                        </Text>
+                                        <Text
+                                            style={ach.completed ? styles.achievementSub : [styles.achievementSub, styles.incomplete]}>
+                                            {ach.subtitle}
+                                        </Text>
+                                    </View>
                                 </View>
                             )
                         })
@@ -106,6 +112,13 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: '#8AAF8E',
         fontFamily: "DMSans_700Bold"
+    },
+    achievementSub: {
+        fontSize: 8,
+        fontWeight: '300',
+        color: '#8AAF8E',
+        fontFamily: "DMSans_700Bold",
+        textAlign: "right"
     },
     incomplete: {
         color: 'gray'
