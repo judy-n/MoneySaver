@@ -81,7 +81,7 @@ export default function App() {
       })
       .catch(e => console.error('error', e))
   }, [])
-  
+
   const checkAchievements = (total) => {
     AsyncStorage.setItem('msave_Total', `${total}`)
     let updated = []
@@ -135,7 +135,7 @@ export default function App() {
 
                       return <Ionicons name={iconName} size={size} color={color} />;
                   },
-                  tabBarActiveTintColor: 'darkslategray',
+                  tabBarActiveTintColor: '#4A844F',
                   tabBarInactiveTintColor: 'lightgray',
               })}
           >
@@ -143,7 +143,7 @@ export default function App() {
                 name="Home"
                 options={{
                   headerRight: props => <NavMenu {...props} setTheme={setTheme} />,
-                  headerStyle: {shadowColor: 'black', shadowRadius: 20, shadowOffset: {width: 2, height: 2}, shadowOpacity: 1}
+                  headerStyle: {shadowColor: 'black', shadowRadius: 20, shadowOffset: {width: 2, height: 2}, shadowOpacity: 0}
                 }}
               >
                 {props => <Total {...props} checkAchievements={checkAchievements} theme={theme} />}
