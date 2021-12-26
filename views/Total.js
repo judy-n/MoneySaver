@@ -7,6 +7,7 @@ export default function Total({ checkAchievements }) {
   const [total, setTotal] = useState(5)
   const [amount, setAmount] = useState("")
   const [description, setDescription] = useState("")
+  const [recents, setRecents] = useState([])
 
   useEffect(() => {
     AsyncStorage.getItem('msave_Total')
@@ -30,6 +31,11 @@ export default function Total({ checkAchievements }) {
   const addAmount = () => {
     if (parseInt(amount)) {
       setTotal(prevTotal => prevTotal + parseInt(amount))
+      let el = {
+        amount: amount,
+        desc: description
+      }
+      setRecents(prev => [...prev, el])
     }
     setAmount("")
     setDescription("")
@@ -78,18 +84,12 @@ export default function Total({ checkAchievements }) {
         <View style={{flex:1, padding: 5, marginBottom:-100, width: '100%', alignItems: 'center'}}>
         <Text style={styles.title}>Recent Savings</Text>
         <ScrollView style={{ width: '100%'}} contentContainerStyle={{paddingBottom: 100}}>
-          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
-          <Text style={styles.item}>HIII</Text>
-          <Text style={styles.item}>HIII</Text>
-          <Text style={styles.item}>HIII</Text>
-          <Text style={styles.item}>HIII</Text>
-          <Text style={styles.item}>HIII</Text>
-          <Text style={styles.item}>HIII</Text>
-          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
-          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
-          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
-          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
-          <Text style={styles.item}>$20 on Timmies Chicken Wrap</Text>
+          {
+          recents.map( (el) => {
+          return (
+              <Text style={styles.item}>${el.amount} <Text style={styles.text}>on</Text> {el.desc}</Text>
+          )
+        })}
         </ScrollView>
         </View>
       </View>
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   title: {
-    color: "darkslategray",
+    color: "lightgray",
     fontFamily: "Helvetica",
     fontWeight: "bold",
     fontSize: 20,
@@ -186,7 +186,8 @@ const styles = StyleSheet.create({
   item: {
     color: "darkslategray",
     fontFamily: "Helvetica",
-    fontWeight: "400",
+    fontWeight: "bold",
+    fontSize: 18,
     padding: 10,
     borderWidth:1,
     borderColor: "lightgray",
