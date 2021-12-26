@@ -1,7 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, Pressable, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { useState, useEffect } from 'react'
+import AppLoading from 'expo-app-loading'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {
+  useFonts,
+  DMSans_400Regular,
+  DMSans_400Regular_Italic,
+  DMSans_500Medium,
+  DMSans_500Medium_Italic,
+  DMSans_700Bold,
+  DMSans_700Bold_Italic
+} from '@expo-google-fonts/dm-sans'
 
 export default function Total({ checkAchievements }) {
   const [total, setTotal] = useState(5)
@@ -11,20 +21,20 @@ export default function Total({ checkAchievements }) {
 
   useEffect(() => {
     AsyncStorage.getItem('msave_Total')
-      .then(result => {
-        if (result && parseInt(result)) {
-          setTotal(parseInt(result))
-        }
-      })
-      .catch(e => console.error('error', e))
+        .then(result => {
+          if (result && parseInt(result)) {
+            setTotal(parseInt(result))
+          }
+        })
+        .catch(e => console.error('error', e))
     AsyncStorage.getItem('msave_Recents')
-      .then(result => {
-        if (result) {
-          const { recents } = JSON.parse(result)
-          setRecents(recents)
-        }
-      })
-      .catch(e => console.error('error', e))
+        .then(result => {
+          if (result) {
+            const {recents} = JSON.parse(result)
+            setRecents(recents)
+          }
+        })
+        .catch(e => console.error('error', e))
   }, [])
 
   useEffect(() => {
@@ -40,6 +50,7 @@ export default function Total({ checkAchievements }) {
     setAmount(amount)
   }
 
+
   const addAmount = () => {
     if (parseInt(amount)) {
       setTotal(prevTotal => prevTotal + parseInt(amount))
@@ -54,58 +65,75 @@ export default function Total({ checkAchievements }) {
     Keyboard.dismiss()
   }
 
-  return (
-      <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    <View style={styles.container}>
-      <Pressable style={styles.reset} onPress={() => setTotal(0)}
-                 children={({ pressed }) => (
-                     <Text style={
-                       { color: pressed ? 'lightgray' : 'darkslategray',
-                         fontFamily: "Helvetica",
-                         fontWeight: "400",
-                         fontSize: 15
-                       }}>
-                       Reset
-                     </Text>)}/>
-      <View style={styles.totalContainer}>
-        <Text style={styles.label}>Total Saved</Text>
-        <Text style={styles.total}>${total}</Text>
-      </View>
-      <View style={styles.form}>
-        <TextInput style={styles.input} placeholder="Amount" value={amount} onChangeText={changeAmount} keyboardType="numeric" />
-        <TextInput style={styles.input} placeholder="Description" value={description} onChangeText={setDescription} />
-        <Pressable style={({ pressed }) => [
-          styles.button,
-          {
-            backgroundColor: pressed ? 'ivory' : 'darkslategray',
-          },
-        ]} onPress={addAmount}
-                   children={({ pressed }) => (
-                       <Text style={
-                       { color: pressed ? 'darkslategray' : 'ivory',
-                         fontFamily: "Helvetica",
-                         fontWeight: "normal",
-                         fontSize: 25
-                       }}>
-                         +
-                       </Text>)}/>
-      </View>
-    </View>
-    </TouchableWithoutFeedback>
-        <View style={{flex:1, padding: 5, marginBottom:-100, width: '100%', alignItems: 'center'}}>
-        <Text style={styles.title}>Recent Savings</Text>
-        <ScrollView style={{ width: '100%'}} contentContainerStyle={{paddingBottom: 100}}>
-          {
-          recents.map( (el) => {
-          return (
-              <Text style={styles.item}>${el.amount} <Text style={styles.text}>on</Text> {el.desc}</Text>
-          )
-        })}
-        </ScrollView>
+  let [fontsLoaded] = useFonts({
+    DMSans_400Regular,
+    DMSans_400Regular_Italic,
+    DMSans_500Medium,
+    DMSans_500Medium_Italic,
+    DMSans_700Bold,
+    DMSans_700Bold_Italic
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+        <View style={styles.container}>
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.container}>
+              <Pressable style={styles.reset} onPress={() => setTotal(0)}
+                         children={({pressed}) => (
+                             <Text style={
+                               {
+                                 color: pressed ? 'lightgray' : 'darkslategray',
+                                 fontFamily: "Helvetica",
+                                 fontWeight: "400",
+                                 fontSize: 15
+                               }}>
+                               Reset
+                             </Text>)}/>
+              <View style={styles.totalContainer}>
+                <Text style={styles.label}>Total Saved</Text>
+                <Text style={styles.total}>${total}</Text>
+              </View>
+              <View style={styles.form}>
+                <TextInput style={styles.input} placeholder="Amount" value={amount} onChangeText={changeAmount}
+                           keyboardType="numeric"/>
+                <TextInput style={styles.input} placeholder="Description" value={description}
+                           onChangeText={setDescription}/>
+                <Pressable style={({pressed}) => [
+                  styles.button,
+                  {
+                    backgroundColor: pressed ? 'ivory' : 'darkslategray',
+                  },
+                ]} onPress={addAmount}
+                           children={({pressed}) => (
+                               <Text style={
+                                 {
+                                   color: pressed ? 'darkslategray' : 'ivory',
+                                   fontFamily: "Helvetica",
+                                   fontWeight: "normal",
+                                   fontSize: 25
+                                 }}>
+                                 +
+                               </Text>)}/>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+          <View style={{flex: 1, padding: 5, marginBottom: -100, width: '100%', alignItems: 'center'}}>
+            <Text style={styles.title}>Recent Savings</Text>
+            <ScrollView style={{width: '100%'}} contentContainerStyle={{paddingBottom: 100}}>
+              {
+                recents.map((el) => {
+                  return (
+                      <Text style={styles.item}>${el.amount} <Text style={styles.text}>on</Text> {el.desc}</Text>
+                  )
+                })}
+            </ScrollView>
+          </View>
         </View>
-      </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -119,18 +147,18 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "darkslategray",
-    fontFamily: "Helvetica",
+    fontFamily: "DMSans_400Regular",
     fontWeight: "400",
     fontSize: 15,
   },
   totalContainer: {
-    width: '50%',
+    maxWidth: '80%',
     alignItems: 'stretch',
     justifyContent: 'center',
     display: "flex",
     flexDirection: "column",
     backgroundColor: '#fff',
-    marginTop: 60
+    marginTop: 60,
   },
   label: {
     fontSize: 20,
@@ -147,7 +175,7 @@ const styles = StyleSheet.create({
   },
   total: {
     color: 'ivory',
-    fontFamily: 'Helvetica',
+    fontFamily: 'DMSans_400Regular',
     backgroundColor: 'darkslategray',
     fontSize: 32,
     padding: 20,
@@ -157,7 +185,7 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: "darkslategray",
     borderRadius: 15,
-    overflow: "hidden"
+    overflow: "hidden",
   },
   form: {
     display: "flex",
@@ -171,7 +199,7 @@ const styles = StyleSheet.create({
     borderColor: "lightgrey",
     padding: 8,
     borderRadius: 5,
-    fontFamily: "Helvetica",
+    fontFamily: "DMSans_400Regular",
     fontSize: 18,
     width: '40%'
   },
@@ -189,15 +217,14 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "lightgray",
-    fontFamily: "Helvetica",
-    fontWeight: "bold",
+    fontFamily: "DMSans_700Bold",
     fontSize: 20,
     marginTop: 40,
     marginBottom: 10
   },
   item: {
     color: "darkslategray",
-    fontFamily: "Helvetica",
+    fontFamily: "DMSans_700Bold",
     fontWeight: "bold",
     fontSize: 18,
     padding: 10,

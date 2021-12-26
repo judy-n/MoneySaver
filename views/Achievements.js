@@ -4,34 +4,58 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faCoffee, faLock, faStar, faUserGraduate, faUserTie, faDiceOne } from '@fortawesome/free-solid-svg-icons'
 import { borderBottomColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes'
 import { library } from '@fortawesome/fontawesome-svg-core'
+import AppLoading from 'expo-app-loading'
+import {
+    useFonts,
+    DMSans_400Regular,
+    DMSans_400Regular_Italic,
+    DMSans_500Medium,
+    DMSans_500Medium_Italic,
+    DMSans_700Bold,
+    DMSans_700Bold_Italic
+} from '@expo-google-fonts/dm-sans'
+
 
 library.add(faCoffee, faLock, faStar, faUserGraduate, faUserTie, faDiceOne)
 
 
 export default function Achievements({ achievements }) {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>My Achievements</Text>
-            <View style={styles.achievements}>
-                {
-                    achievements.map((ach, index) => {
-                        return (
-                            <View style={styles.achievement} key={index}>
-                                <FontAwesomeIcon 
-                                    style={ach.completed ? [styles.complete, {color: ach.color}] : [styles.incomplete]}
-                                    icon={ach.completed ? ach.icon : "lock"}
-                                    size={ 64 } 
-                                />
-                                <Text style={ach.completed ? styles.achievementText : [styles.achievementText, styles.incomplete]}>
-                                    {ach.text}
-                                </Text>
-                            </View>
-                        )
-                    })
-                }
+    let [fontsLoaded] = useFonts({
+        DMSans_400Regular,
+        DMSans_400Regular_Italic,
+        DMSans_500Medium,
+        DMSans_500Medium_Italic,
+        DMSans_700Bold,
+        DMSans_700Bold_Italic
+    })
+
+    if (!fontsLoaded) {
+        return <AppLoading/>
+    } else {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.title}>My Achievements</Text>
+                <View style={styles.achievements}>
+                    {
+                        achievements.map((ach, index) => {
+                            return (
+                                <View style={styles.achievement} key={index}>
+                                    <FontAwesomeIcon
+                                        style={ach.completed ? [styles.complete, {color: ach.color}] : [styles.incomplete]}
+                                        icon={ach.completed ? ach.icon : "lock"}
+                                        size={64}
+                                    />
+                                    <Text
+                                        style={ach.completed ? styles.achievementText : [styles.achievementText, styles.incomplete]}>
+                                        {ach.text}
+                                    </Text>
+                                </View>
+                            )
+                        })
+                    }
+                </View>
             </View>
-        </View>
-    )
+        );}
 }
 
 const styles = StyleSheet.create({
@@ -45,7 +69,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 28,
-        fontWeight: 'bold'
+        fontFamily: "DMSans_700Bold",
     },
     achievements: {
         display: 'flex',
@@ -71,8 +95,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: "ivory",
-        fontFamily: "Helvetica",
-        fontWeight: "bold",
+        fontFamily: "DMSans_700Bold",
         fontSize: 20,
     },
     achievement: {
@@ -90,6 +113,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '700',
         color: 'black',
+        fontFamily: "DMSans_700Bold"
     },
     incomplete: {
         color: 'gray'
