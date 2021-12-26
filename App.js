@@ -30,19 +30,40 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
   const [achievements, setAchievements] = useState([
-    {icon: "coffee", text: "Save before 8 a.m.", completed: false},
-    {icon: "coffee", text: "Save before 8 a.m.", completed: true},
-    {icon: "star", text: "Save $500", completed: false},
-    {icon: "user-graduate", text: "Save $5000", completed: false},
-    {icon: "user-tie", text: "Save $50000", completed: false},
+    {
+      icon: "coffee",
+      text: "Save before 8 a.m.",
+      completed: false,
+      condition: (value) => (new Date()).getHours < 8 && (new Date()).getHours() >= 0
+    },
+    {
+      icon: "star",
+      text: "Save $500",
+      completed: false,
+      condition: (value) => value >= 500
+    },
+    {
+      icon: "user-graduate",
+      text: "Save $5000",
+      completed: false,
+      condition: (value) => value >= 5000
+    },
+    {
+      icon: "user-tie",
+      text: "Save $50000",
+      completed: false,
+      condition: (value) => value >= 50000
+    },
   ])
   
   const checkAchievements = (total) => {
-    if (total >= 500 && !isCompleted("star")) {
-      updateAchievement("star")
-    } else if (total < 500 && isCompleted("star")) {
-      updateAchievement("star", false)
-    }
+    achievements.forEach(ach => {
+      const {icon, condition} = ach
+
+      if (condition(total) && !isCompleted(icon)) {
+        updateAchievement(icon)
+      }
+    })
   }
 
   const isCompleted = (iconName) => { // will return false if item not found also
