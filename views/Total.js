@@ -81,50 +81,52 @@ export default function Total({ checkAchievements }) {
         <View style={styles.container}>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.container}>
-              <Pressable style={styles.reset} onPress={() => setTotal(0)}
+              <Pressable style={styles.reset} onPress={() => {
+                setTotal(0)
+                setRecents([])
+              } }
                          children={({pressed}) => (
                              <Text style={
                                {
-                                 color: pressed ? 'lightgray' : 'darkslategray',
-                                 fontFamily: "Helvetica",
-                                 fontWeight: "400",
+                                 color: pressed ? 'white' : '#4A844F',
+                                 fontFamily: "DMSans_400Regular",
                                  fontSize: 15
                                }}>
                                Reset
                              </Text>)}/>
               <View style={styles.totalContainer}>
                 <Text style={styles.label}>Total Saved</Text>
-                <Text style={styles.total}>${total}</Text>
-              </View>
-              <View style={styles.form}>
-                <TextInput style={styles.input} placeholder="Amount" value={amount} onChangeText={changeAmount}
-                           keyboardType="numeric"/>
-                <TextInput style={styles.input} placeholder="Description" value={description}
-                           onChangeText={setDescription}/>
-                <Pressable style={({pressed}) => [
-                  styles.button,
-                  {
-                    backgroundColor: pressed ? 'ivory' : 'darkslategray',
-                  },
-                ]} onPress={addAmount}
-                           children={({pressed}) => (
-                               <Text style={
-                                 {
-                                   color: pressed ? 'darkslategray' : 'ivory',
-                                   fontFamily: "Helvetica",
-                                   fontWeight: "normal",
-                                   fontSize: 25
-                                 }}>
-                                 +
-                               </Text>)}/>
+                <Text style={styles.total}>$ {total}</Text>
               </View>
             </View>
           </TouchableWithoutFeedback>
-          <View style={{flex: 1, padding: 5, marginBottom: -100, width: '100%', alignItems: 'center'}}>
+          <View style={styles.bottomPart}>
+            <View style={styles.form}>
+              <TextInput style={styles.input} placeholder="Amount" value={amount} onChangeText={changeAmount}
+                         keyboardType="numeric"/>
+              <TextInput style={styles.input} placeholder="Description" value={description}
+                         onChangeText={setDescription}/>
+              <Pressable style={({pressed}) => [
+                styles.button,
+                {
+                  backgroundColor: pressed ? 'white' : '#8AAF8E',
+                },
+              ]} onPress={addAmount}
+                         children={({pressed}) => (
+                             <Text style={
+                               {
+                                 color: pressed ? '#8AAF8E' : 'white',
+                                 fontFamily: "DMSans_400Regular",
+                                 fontWeight: "normal",
+                                 fontSize: 25
+                               }}>
+                               +
+                             </Text>)}/>
+            </View>
             <Text style={styles.title}>Recent Savings</Text>
-            <ScrollView style={{width: '100%'}} contentContainerStyle={{paddingBottom: 100}}>
+            <ScrollView style={{width: '100%'}} contentContainerStyle={{paddingBottom: 10}}>
               {
-                recents.map((el) => {
+                recents.slice(0).reverse().map((el) => {
                   return (
                       <Text style={styles.item}>${el.amount} <Text style={styles.text}>on</Text> {el.desc}</Text>
                   )
@@ -139,14 +141,14 @@ export default function Total({ checkAchievements }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#8AAF8E',
     alignItems: 'center',
     justifyContent: 'flex-start',
     width: '100%',
     overflow: "scroll",
   },
   text: {
-    color: "darkslategray",
+    color: "#4A844F",
     fontFamily: "DMSans_400Regular",
     fontWeight: "400",
     fontSize: 15,
@@ -157,41 +159,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     display: "flex",
     flexDirection: "column",
-    backgroundColor: '#fff',
-    marginTop: 60,
+    backgroundColor: '#8AAF8E',
+    marginTop: 20,
   },
   label: {
     fontSize: 20,
     textAlign: 'center',
     fontWeight: '500',
     padding: 8,
-    color: 'ivory',
-    backgroundColor: 'gray',
-    marginBottom: 10,
-    borderWidth: 5,
-    borderColor: "gray",
-    borderRadius: 15,
-    overflow: "hidden"
+    color: 'white',
+    fontFamily: 'DMSans_400Regular',
   },
   total: {
-    color: 'ivory',
+    color: '#8AAF8E',
     fontFamily: 'DMSans_400Regular',
-    backgroundColor: 'darkslategray',
-    fontSize: 32,
-    padding: 20,
+    backgroundColor: 'white',
+    fontSize: 60,
+    padding: 10,
     textAlign: "center",
     fontWeight: '500',
     marginBottom: 10,
     borderWidth: 5,
-    borderColor: "darkslategray",
-    borderRadius: 15,
+    borderColor: "white",
+    borderRadius: 20,
     overflow: "hidden",
+    minWidth: '60%',
+    maxWidth: '80%',
   },
   form: {
     display: "flex",
     flexDirection: "row",
-    margin: 10,
-    marginBottom: 0
+    marginBottom: 0,
+    backgroundColor: 'white',
+    alignItems: 'center'
   },
   input: {
     marginRight: 10,
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   },
   button: {
     borderWidth: 3,
-    borderColor: "darkslategray",
+    borderColor: "#8AAF8E",
     borderRadius: 5,
     width: '10%',
     display: 'flex',
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   item: {
-    color: "darkslategray",
+    color: "#8AAF8E",
     fontFamily: "DMSans_700Bold",
     fontWeight: "bold",
     fontSize: 18,
@@ -232,4 +232,13 @@ const styles = StyleSheet.create({
     borderColor: "lightgray",
     textAlign: "center"
   },
+  bottomPart: {
+    flex: 1, padding: 5, marginBottom: 0, width: '100%', alignItems: 'center', marginTop: 0,
+    backgroundColor: 'white',
+    borderWidth: 5,
+    borderColor: 'white',
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+    paddingTop: 20
+  }
 });
