@@ -12,6 +12,7 @@ import {
   DMSans_700Bold,
   DMSans_700Bold_Italic
 } from '@expo-google-fonts/dm-sans'
+import { PressStart2P_400Regular } from '@expo-google-fonts/press-start-2p';
 
 export default function Total({ checkAchievements, theme, resetAchievements }) {
   const [total, setTotal] = useState(0)
@@ -91,7 +92,7 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
     } else if (theme === "christmas") {
       return require('../assets/christmasback.jpg')
     } else if (theme === "pixel") {
-      return require('../assets/pixelback.png')
+      return require('../assets/pixelbg.png')
     } else if (theme === "bitcoin") {
       return require('../assets/bitcoinback.jpg')
     } else if (theme === "rich") {
@@ -101,13 +102,25 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
     }
   }
 
+  const font = () => {
+    if (theme === "default") {
+      return "DMSans_400Regular"
+    }
+    else if (theme === "pixel") {
+      return "PressStart2P_400Regular"
+    } else {
+      return "DMSans_400Regular"
+    }
+  }
+
   let [fontsLoaded] = useFonts({
     DMSans_400Regular,
     DMSans_400Regular_Italic,
     DMSans_500Medium,
     DMSans_500Medium_Italic,
     DMSans_700Bold,
-    DMSans_700Bold_Italic
+    DMSans_700Bold_Italic,
+    PressStart2P_400Regular
   });
 
   // please remove this if you want to work on this project more
@@ -119,7 +132,8 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
     return <AppLoading />;
   } else {
     return (
-        <ImageBackground source={background()} resizeMode='cover' style={{width: '100%', height: '100%', backgroundColor: '#8AAF8E'}}>
+        <ImageBackground source={background()} imageStyle=
+            {{opacity: theme === 'default' ? 0 : 1}} resizeMode='cover' style={{width: '100%', height: '100%', backgroundColor: '#8AAF8E'}}>
         <View style={styles.container}>
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={styles.container}>
@@ -141,7 +155,11 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
                              </Text>)}/>
               <View style={styles.totalContainer}>
                 <Text style={styles.label}>Total Saved</Text>
-                <Text style={[styles.total, c({color: '#bd3f2d'})]}>{currency()} {total}</Text>
+                <View style={styles.total}>
+                  <Text style={[styles.currency, c({color: '#bd3f2d'})]}>{currency()}</Text>
+                  <Text style={[styles.amountContainer, {fontFamily: font()}]}>{total}</Text>
+                </View>
+
               </View>
             </View>
           </TouchableWithoutFeedback>
@@ -220,17 +238,23 @@ const styles = StyleSheet.create({
     color: '#8AAF8E',
     fontFamily: 'DMSans_400Regular',
     backgroundColor: 'white',
-    fontSize: 60,
+    fontSize: 40,
     padding: 10,
     textAlign: "center",
     fontWeight: '500',
-    marginBottom: 10,
     borderWidth: 5,
     borderColor: "white",
     borderRadius: 20,
-    overflow: "hidden",
+    // overflow: "hidden",
     minWidth: '60%',
     maxWidth: '100%',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: '#171717',
+    shadowOffset: {width: -1, height: 2},
+    shadowOpacity: 0.2,
   },
   form: {
     display: "flex",
@@ -287,10 +311,16 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     paddingTop: 20
   },
-  currecy: {
+  currency: {
     display: 'flex',
-    height: null,
-    width: null,
-    resizeMode: 'contain',
+    resizeMode: "contain",
+    fontSize: 40,
+    color: '#8AAF8E',
+    marginRight: 0
+  },
+  amountContainer: {
+    fontSize: 40,
+    color: '#8AAF8E',
+    marginLeft: 10
   }
 });
