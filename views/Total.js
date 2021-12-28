@@ -157,7 +157,8 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
                 <Text style={styles.label}>Total Saved</Text>
                 <View style={styles.total}>
                   <Text style={[styles.currency, c({color: '#bd3f2d'})]}>{currency()}</Text>
-                  <Text style={[styles.amountContainer, {fontFamily: font()}]}>{total}</Text>
+                  <Text style={[styles.amountContainer, {fontFamily: font(),
+                    fontSize: theme === 'pixel'? 30 : 40}]}>{total}</Text>
                 </View>
 
               </View>
@@ -173,6 +174,7 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
                 styles.button,
                 {
                   backgroundColor: pressed ? 'white' : c('#bd3f2d','#8AAF8E'),
+                  borderColor: theme === 'christmas' ? "#bd3f2d": '#8AAF8E'
                 },
               ]} onPress={addAmount}
                          children={({pressed}) => (
@@ -181,7 +183,7 @@ export default function Total({ checkAchievements, theme, resetAchievements }) {
                                  color: pressed ? c('#bd3f2d','#8AAF8E') : 'white',
                                  fontFamily: "DMSans_400Regular",
                                  fontWeight: "normal",
-                                 fontSize: 25
+                                 fontSize: 25,
                                }}>
                                +
                              </Text>)}/>
@@ -255,6 +257,7 @@ const styles = StyleSheet.create({
     shadowColor: '#171717',
     shadowOffset: {width: -1, height: 2},
     shadowOpacity: 0.2,
+    // height: '80%'
   },
   form: {
     display: "flex",
@@ -303,7 +306,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   bottomPart: {
-    flex: 1, padding: 5, marginBottom: 0, width: '100%', alignItems: 'center', marginTop: 0,
+    flex: 1, padding: 5,paddingBottom: 50, width: '100%', alignItems: 'center', marginTop: 0,
     backgroundColor: 'white',
     borderWidth: 5,
     borderColor: 'white',
@@ -319,7 +322,6 @@ const styles = StyleSheet.create({
     marginRight: 0
   },
   amountContainer: {
-    fontSize: 40,
     color: '#8AAF8E',
     marginLeft: 10
   }
