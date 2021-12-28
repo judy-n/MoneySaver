@@ -15,5 +15,4 @@ If you were about to buy something and chose not to, add the cost of it on our a
 Saving more money gives you achievements, which then unlocks different themes for the app!
 Check out our "pixel" theme below:
 
-<img src="assets/screen3.PNG" width="30%">
-<img src="assets/screen2.PNG" width="30%">
+<img src="assets/screen2.PNG" width="30%"><img src="assets/screen3.PNG" width="30%">
